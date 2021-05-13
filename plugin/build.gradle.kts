@@ -1,9 +1,10 @@
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `java-gradle-plugin`
+    `kotlin-dsl`
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.4.32"
+    id("org.jetbrains.kotlin.jvm") version "1.4.31"
     // Can't have 1.5.0 until it's fixed https://github.com/gradle/gradle/issues/15020
 
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
@@ -20,7 +21,7 @@ repositories {
 
 dependencies {
     // Align versions of all Kotlin components
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.4.32"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.4.31"))
 
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -28,13 +29,15 @@ dependencies {
     // Use the JUnit 5 test library.
     testImplementation(platform("org.junit:junit-bom:5.7.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    testImplementation("org.jsoup:jsoup:1.13.1")
 }
 
 gradlePlugin {
     // Define the plugin
     val greeting by plugins.creating {
         id = "io.github.gradlebom.generator"
-        implementationClass = "io.github.gradlebom.GradleBomGeneratorPluginPlugin"
+        implementationClass = "io.github.gradlebom.BomGeneratorPlugin"
     }
 }
 
@@ -51,7 +54,7 @@ val functionalTest by tasks.registering(Test::class) {
     classpath = functionalTestSourceSet.runtimeClasspath
 }
 
-tasks.test {
+tasks.withType(Test::class.java) {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed")
