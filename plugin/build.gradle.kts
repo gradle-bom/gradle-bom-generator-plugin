@@ -7,11 +7,15 @@ plugins {
     // Can't have 1.5.0 until it's fixed https://github.com/gradle/gradle/issues/15020
 
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("io.gitlab.arturbosch.detekt") version "1.16.0"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+
+    // Add kotlinx-html for detekt
+    maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
 dependencies {
