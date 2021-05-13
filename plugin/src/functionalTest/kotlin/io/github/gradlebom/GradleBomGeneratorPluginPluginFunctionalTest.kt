@@ -13,18 +13,19 @@ class GradleBomGeneratorPluginPluginFunctionalTest {
     @TempDir
     lateinit var projectDir: Path
 
-
     @Test
     fun `can run task`() {
         // Setup the test build
         val projectDir = (projectDir / "build" / "functionalTest").toFile()
         projectDir.mkdirs()
         projectDir.resolve("settings.gradle").writeText("")
-        projectDir.resolve("build.gradle").writeText("""
+        projectDir.resolve("build.gradle").writeText(
+            """
             plugins {
                 id('io.github.gradlebom.generator')
             }
-        """)
+        """
+        )
 
         // Run the build
         val runner = GradleRunner.create()
@@ -32,7 +33,7 @@ class GradleBomGeneratorPluginPluginFunctionalTest {
         runner.withPluginClasspath()
         runner.withArguments("greeting")
         runner.withProjectDir(projectDir)
-        val result = runner.build();
+        val result = runner.build()
 
         // Verify the result
         assertTrue(result.output.contains("Hello from plugin 'io.github.gradlebom.generator'"))
