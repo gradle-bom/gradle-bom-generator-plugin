@@ -20,6 +20,7 @@ class BomGeneratorPlugin : Plugin<Project> {
 
         bomProject.afterEvaluate {
             val excludedProjects = extension.excludedProjects.get() + name
+            val includeDependencies = extension.includeDependencies.get()
             val projectSelector = ProjectSelector(excludedProjects)
 
             extensions.configure<PublishingExtension> {
@@ -28,7 +29,11 @@ class BomGeneratorPlugin : Plugin<Project> {
                         artifactId = name
                         pom.withXml {
                             val pomGenerator = PomGenerator(this)
+
                             projectSelector.selectProjects(bomProject)
+                                .map(IncludedDependency.Companion::from)
+                                .toSet()
+                                .plus(includeDependencies)
                                 .forEach(pomGenerator::generate)
                         }
                     }

@@ -1,16 +1,15 @@
 package io.github.gradlebom
 
-import org.gradle.api.Project
 import org.gradle.api.XmlProvider
 
 internal class PomGenerator(xmlProvider: XmlProvider) {
     private val dependencyManagementNode = xmlProvider.createDependencyManagementNode()
 
-    fun generate(project: Project) {
+    fun generate(dependency: IncludedDependency) {
         dependencyManagementNode.appendNode(DEPENDENCY).apply {
-            appendNode(GROUP_ID, project.group)
-            appendNode(ARTIFACT_ID, project.name)
-            appendNode(VERSION, project.version)
+            appendNode(GROUP_ID, dependency.group)
+            appendNode(ARTIFACT_ID, dependency.name)
+            appendNode(VERSION, dependency.version)
         }
     }
 

@@ -12,6 +12,7 @@ ease working with versioning multi-project dependency.
 * [Usage](#usage)
     * [Applying the plugin](#applying-the-plugin)
     * [Excluding unwanted modules](#excluding-unwanted-modules)
+    * [Including external dependencies](#including-external-dependencies)
     * [Importing generated BOM](#importing-generated-bom)
 * [License](#license)
 * [Copyright](#copyright)
@@ -44,6 +45,18 @@ You can exclude modules from a BOM generation.
 ```gradle
 bomGenerator {
     excludedProjects = ["excluded-module"]
+}
+```
+
+## Including external dependencies
+
+You can add an external dependency that version
+will be included in a BOM.
+
+```gradle
+bomGenerator {
+    includeDependency("org.other", "project", "1.0.0")
+    includeDependency("org.other:project:1.0.4")
 }
 ```
 

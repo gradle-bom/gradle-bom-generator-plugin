@@ -87,13 +87,12 @@ internal class BomGeneratorPluginFunctionalTest {
             """.trimIndent()
         )
 
-        createSubproject("example-app")
-        createSubproject("excluded-example-app")
+        `create a subproject`("example-app")
+        `create a subproject`("excluded-example-app")
 
         gradleRunner.withArguments(":example-bom:generatePomFileForBomJavaPublication").build()
 
-        val pomContent = (exampleBomProject / "build" / "publications" / "bomJava" / "pom-default.xml")
-            .readText()
+        val pomContent = `read a POM file from`(exampleBomProject)
 
         val pom = Jsoup.parse(pomContent)
 
@@ -122,7 +121,74 @@ internal class BomGeneratorPluginFunctionalTest {
         }
     }
 
-    private fun createSubproject(projectName: String) {
+    @Test
+    internal fun `should generate BOM file with included dependencies`() {
+        // Setup the test build
+        (projectDir / "settings.gradle").writeText(
+            """
+                include(':example-bom')
+            """.trimIndent()
+        )
+
+        val exampleBomProject = (projectDir / "example-bom").createDirectories()
+        (exampleBomProject / "build.gradle").writeText(
+            """
+                plugins {
+                    id('io.github.gradlebom.generator')
+                }
+                group = 'org.example'
+                version = '0.0.1'
+                
+                bomGenerator {
+                    includeDependency('org.other', 'project', '1.0.0')
+                    includeDependency('org.different:json:1.0.2')
+                }
+            """.trimIndent()
+        )
+
+        gradleRunner.withArguments(":example-bom:generatePomFileForBomJavaPublication").build()
+
+        val pomContent = `read a POM file from`(exampleBomProject)
+
+        val pom = Jsoup.parse(pomContent)
+        with(pom.select("dependencyManagement")) {
+            assertTrue(isNotEmpty()) {
+                "'dependencyManagement' node exists"
+            }
+
+            with(select("dependency")) {
+                assertEquals(size, 2) {
+                    "has two 'dependency' nodes"
+                }
+
+                with(first()) {
+                    assertEquals(selectFirst("groupId").text(), "org.other") {
+                        "first dependency has correct 'groupId'"
+                    }
+                    assertEquals(selectFirst("artifactId").text(), "project") {
+                        "first dependency has correct 'artifactId'"
+                    }
+                    assertEquals(selectFirst("version").text(), "1.0.0") {
+                        "first dependency has correct 'version'"
+                    }
+                }
+
+                with(get(1)) {
+                    assertEquals(selectFirst("groupId").text(), "org.different") {
+                        "second dependency has correct 'groupId'"
+                    }
+                    assertEquals(selectFirst("artifactId").text(), "json") {
+                        "second dependency has correct 'artifactId'"
+                    }
+                    assertEquals(selectFirst("version").text(), "1.0.2") {
+                        "second dependency has correct 'version'"
+                    }
+                }
+            }
+        }
+    }
+
+    private fun `create a subproject`(projectName: String) {
         val exampleAppProject = (projectDir / projectName).createDirectories()
         (exampleAppProject / "build.gradle").writeText(
             """
@@ -142,4 +208,8 @@ internal class BomGeneratorPluginFunctionalTest {
             """.trimIndent()
         )
     }
+
+    private fun `read a POM file from`(path: Path): String =
+        (path / "build" / "publications" / "bomJava" / "pom-default.xml")
+            .readText()
 }
