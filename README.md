@@ -82,7 +82,7 @@ See [LICENSE](./LICENSE).
 
 # Copyright
 
-Copyright (c) 2021 Waldemar Panas
+Copyright © 2021 Waldemar Panas
 
 
 [imported in other projects]: https://docs.gradle.org/current/userguide/platforms.html#sub:bom_import
