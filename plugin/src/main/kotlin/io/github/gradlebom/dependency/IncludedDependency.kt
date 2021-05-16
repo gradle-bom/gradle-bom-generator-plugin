@@ -1,8 +1,8 @@
-package io.github.gradlebom
+package io.github.gradlebom.dependency
 
 import org.gradle.api.Project
 
-data class IncludedDependency(val group: String, val name: String, val version: String) {
+data class IncludedDependency internal constructor(val group: String, val name: String, val version: String) {
     init {
         require(group.isNotBlank()) {
             "Included dependency group can't be empty"
@@ -17,7 +17,7 @@ data class IncludedDependency(val group: String, val name: String, val version: 
         }
     }
 
-    companion object {
+    internal companion object {
         fun from(project: Project) = IncludedDependency(
             project.group as String, project.name, project.version as String
         )

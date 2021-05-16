@@ -1,9 +1,9 @@
-package io.github.gradlebom
+package io.github.gradlebom.dependency.generators
 
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 
-internal class ProjectSelector(private val excludedProjects: Set<String>) {
+internal class ProjectModulesSelector(private val excludedProjects: Set<String>) {
     fun selectProjects(project: Project): Sequence<Project> = project.rootProject
         .subprojects
         .asSequence()

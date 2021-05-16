@@ -1,10 +1,12 @@
 package io.github.gradlebom
 
+import io.github.gradlebom.dependency.generators.IncludedDependenciesGenerators
+import io.github.gradlebom.pom.PomGenerator
+import io.github.gradlebom.utils.MavenPublishPluginApplier
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 
@@ -14,39 +16,25 @@ class BomGeneratorPlugin : Plugin<Project> {
             "Plugin can't be applied to root project. Create a separate subproject for BOM generation."
         }
 
-        applyMavenPublishingPlugin(bomProject)
-
-        val extension = createBomGeneratorExtension(bomProject)
+        MavenPublishPluginApplier.applyPlugin(bomProject)
+        val extension = BomGeneratorExtension.of(bomProject)
+        val includedDependenciesGenerators = IncludedDependenciesGenerators.of(bomProject)
 
         bomProject.afterEvaluate {
-            val excludedProjects = extension.excludedProjects.get() + name
-            val includeDependencies = extension.includeDependencies.get()
-            val projectSelector = ProjectSelector(excludedProjects)
+            val pomGenerator = includedDependenciesGenerators
+                .flatMap { it.generate(extension) }
+                .distinct()
+                .let(::PomGenerator)
 
             extensions.configure<PublishingExtension> {
                 publications {
                     create<MavenPublication>(PUBLICATION_NAME) {
                         artifactId = name
-                        pom.withXml {
-                            val pomGenerator = PomGenerator(this)
-
-                            projectSelector.selectProjects(bomProject)
-                                .map(IncludedDependency.Companion::from)
-                                .toSet()
-                                .plus(includeDependencies)
-                                .forEach(pomGenerator::generate)
-                        }
+                        pom.withXml(pomGenerator::generateXml)
                     }
                 }
             }
         }
-    }
-
-    private fun createBomGeneratorExtension(bomProject: Project) =
-        bomProject.extensions.create<BomGeneratorExtension>(BomGeneratorExtension.NAME, bomProject)
-
-    private fun applyMavenPublishingPlugin(bomProject: Project) {
-        bomProject.pluginManager.apply(MavenPublishPlugin::class.java)
     }
 
     private companion object {
