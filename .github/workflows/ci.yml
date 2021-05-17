@@ -38,4 +38,4 @@ jobs:
           distribution: 'adopt'
 
       - name: Run build and checks
-        run: ./gradlew build
+        run: ./gradlew --scan build
