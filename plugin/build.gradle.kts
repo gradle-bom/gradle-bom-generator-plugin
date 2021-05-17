@@ -2,6 +2,7 @@ plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `java-gradle-plugin`
     `kotlin-dsl`
+    id("com.gradle.plugin-publish") version "0.14.0"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.4.31"
@@ -9,6 +10,17 @@ plugins {
 
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
+}
+
+val readableName = "BOM Generator Plugin"
+description = "Gradle plugin for generating a bill of materials (BOM) file for multi-module projects."
+val repoUrl = "https://github.com/gradle-bom/gradle-bom-generator-plugin"
+
+pluginBundle {
+    description = project.description
+    website = repoUrl
+    vcsUrl = repoUrl
+    tags = listOf("bom", "maven", "dependencies", "multi-module")
 }
 
 repositories {
@@ -35,8 +47,9 @@ dependencies {
 
 gradlePlugin {
     // Define the plugin
-    val greeting by plugins.creating {
+    val bomGenerator by plugins.creating {
         id = "io.github.gradlebom.generator"
+        displayName = readableName
         implementationClass = "io.github.gradlebom.BomGeneratorPlugin"
     }
 }
