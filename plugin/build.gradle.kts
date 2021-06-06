@@ -14,6 +14,9 @@ plugins {
     id("org.jetbrains.dokka") version "1.4.32"
 }
 
+group = "io.github.gradlebom"
+version = "1.0.0.RC1"
+
 val readableName = "BOM Generator Plugin"
 description = "Gradle plugin for generating a bill of materials (BOM) file for multi-module projects."
 val repoUrl = "https://github.com/gradle-bom/gradle-bom-generator-plugin"
