@@ -2,6 +2,13 @@ package io.github.gradlebom.dependency
 
 import org.gradle.api.Project
 
+/**
+ * The value object that holds included dependency data.
+ *
+ * @property group the group of the module to be added as a dependency.
+ * @property name the name of the module to be added as a dependency.
+ * @property version the optional version of the module to be added as a dependency.
+ */
 data class IncludedDependency internal constructor(val group: String, val name: String, val version: String) {
     init {
         require(group.isNotBlank()) {

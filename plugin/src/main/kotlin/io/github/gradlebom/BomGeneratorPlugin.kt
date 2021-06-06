@@ -10,6 +10,14 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 
+/**
+ * BOM Generator Plugin.
+ *
+ * Generates BOM project for multi-module project with all modules
+ * excluding [BomGeneratorExtension.excludedProjects]
+ * and including [BomGeneratorExtension.includeDependencies].
+ *
+ */
 class BomGeneratorPlugin : Plugin<Project> {
     override fun apply(bomProject: Project) {
         require(bomProject != bomProject.rootProject) {
