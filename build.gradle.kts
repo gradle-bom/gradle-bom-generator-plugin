@@ -53,7 +53,7 @@ dependencies {
 gradlePlugin {
     // Define the plugin
     val bomGenerator by plugins.creating {
-        id = "io.github.gradlebom.generator"
+        id = "io.github.gradlebom.generator-plugin"
         displayName = readableName
         implementationClass = "io.github.gradlebom.BomGeneratorPlugin"
     }

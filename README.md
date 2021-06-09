@@ -32,7 +32,7 @@ multi-module project, check out this [official guide].
 
 ```kotlin
 plugins {
-    id("io.github.gradlebom.generator") version "«version»"
+    id("io.github.gradlebom.generator-plugin") version "«version»"
 }
 
 group = "org.example"
@@ -43,7 +43,7 @@ version = "1.0.0"
 
 ```groovy
 plugins {
-    id 'io.github.gradlebom.generator' version '«version»'
+    id 'io.github.gradlebom.generator-plugin' version '«version»'
 }
 
 group = 'org.example'

@@ -9,4 +9,4 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "gradle-bom-generator-plugin"
+rootProject.name = "generator-plugin"

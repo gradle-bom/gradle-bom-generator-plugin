@@ -14,7 +14,7 @@ internal class BomGeneratorPluginTest {
         val project = ProjectBuilder.builder()
             .withParent(rootProject)
             .build()
-        project.plugins.apply("io.github.gradlebom.generator")
+        project.plugins.apply("io.github.gradlebom.generator-plugin")
 
         // Verify the result
         val bomGeneratorExtension = project.extensions.findByName("bomGenerator")
