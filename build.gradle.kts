@@ -26,6 +26,12 @@ pluginBundle {
     website = repoUrl
     vcsUrl = repoUrl
     tags = listOf("bom", "maven", "dependencies", "multi-module")
+
+    mavenCoordinates {
+        groupId = project.group.toString()
+        artifactId = project.name
+        version = project.version.toString()
+    }
 }
 
 repositories {
