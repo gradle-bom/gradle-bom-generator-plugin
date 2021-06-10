@@ -34,10 +34,12 @@ class BomGeneratorPlugin : Plugin<Project> {
                 .distinct()
                 .let(::PomGenerator)
 
+            val projectName = name
+
             extensions.configure<PublishingExtension> {
                 publications {
                     create<MavenPublication>(PUBLICATION_NAME) {
-                        artifactId = name
+                        artifactId = projectName
                         pom.withXml(pomGenerator::generateXml)
                     }
                 }

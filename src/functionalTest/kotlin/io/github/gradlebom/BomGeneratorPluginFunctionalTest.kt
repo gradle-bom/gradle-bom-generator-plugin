@@ -151,6 +151,19 @@ internal class BomGeneratorPluginFunctionalTest {
         val pomContent = `read a POM file from`(exampleBomProject)
 
         val pom = Jsoup.parse(pomContent)
+
+        with(pom.select("artifactId").first()) {
+            assertEquals(text(), "example-bom")
+        }
+
+        with(pom.select("groupId").first()) {
+            assertEquals(text(), "org.example")
+        }
+
+        with(pom.select("version").first()) {
+            assertEquals(text(), "0.0.1")
+        }
+
         with(pom.select("dependencyManagement")) {
             assertTrue(isNotEmpty()) {
                 "'dependencyManagement' node exists"
