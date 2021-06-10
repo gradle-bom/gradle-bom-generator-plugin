@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "io.github.gradlebom"
-version = "1.0.0.RC2"
+version = "1.0.0.RC3"
 
 val readableName = "BOM Generator Plugin"
 description = "Gradle plugin for generating a bill of materials (BOM) file for multi-module projects."
@@ -58,6 +58,7 @@ dependencies {
 
 gradlePlugin {
     // Define the plugin
+    @kotlin.Suppress("UNUSED_VARIABLE")
     val bomGenerator by plugins.creating {
         id = "io.github.gradlebom.generator-plugin"
         displayName = readableName

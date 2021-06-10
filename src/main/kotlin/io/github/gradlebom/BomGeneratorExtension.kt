@@ -16,8 +16,7 @@ import org.gradle.kotlin.dsl.setProperty
  */
 open class BomGeneratorExtension(project: Project) {
     val excludedProjects = project.objects.setProperty<String>()
-    var includeDependencies = project.objects.setProperty<IncludedDependency>()
-        private set
+    internal val includeDependencies = project.objects.setProperty<IncludedDependency>()
 
     /**
      * Adds an external dependency to BOM.

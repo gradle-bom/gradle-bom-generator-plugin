@@ -9,7 +9,7 @@ import org.gradle.api.Project
  * @property name the name of the module to be added as a dependency.
  * @property version the optional version of the module to be added as a dependency.
  */
-data class IncludedDependency internal constructor(val group: String, val name: String, val version: String) {
+internal data class IncludedDependency(val group: String, val name: String, val version: String) {
     init {
         require(group.isNotBlank()) {
             "Included dependency group can't be empty"
