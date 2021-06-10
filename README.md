@@ -58,7 +58,7 @@ You can exclude modules from a BOM generation.
 
 ```kotlin
 bomGenerator {
-    excludedProjects = ["excluded-module"]
+    excludeProject("excluded-module")
 }
 ```
 

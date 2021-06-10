@@ -82,7 +82,7 @@ internal class BomGeneratorPluginFunctionalTest {
                 version = '0.0.1'
                 
                 bomGenerator {
-                    excludedProjects = ['excluded-example-app']
+                    excludeProject('excluded-example-app')
                 }
             """.trimIndent()
         )
