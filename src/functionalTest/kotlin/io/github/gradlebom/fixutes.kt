@@ -111,10 +111,20 @@ internal fun Path.createSubproject(projectName: String) {
 }
 
 @ExperimentalPathApi
+internal fun Path.withBuildGradle(buildGradleContent: String) {
+    (this / "build.gradle").writeText(buildGradleContent)
+}
+
+@ExperimentalPathApi
+internal fun Path.withSettingsGradle(buildGradleContent: String) {
+    (this / "settings.gradle").writeText(buildGradleContent)
+}
+
+@ExperimentalPathApi
 internal fun Path.createBomSubProject(buildGradleContent: String): Path =
     (this / "example-bom").createDirectories()
         .also { exampleBomProject ->
-            (exampleBomProject / "build.gradle").writeText(buildGradleContent)
+            exampleBomProject.withBuildGradle(buildGradleContent)
         }
 
 internal fun GradleRunner.runGeneratePom(name: String = "bomJava") {

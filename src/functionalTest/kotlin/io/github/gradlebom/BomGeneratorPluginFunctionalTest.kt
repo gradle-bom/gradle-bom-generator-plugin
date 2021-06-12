@@ -8,8 +8,6 @@ import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 import kotlin.io.path.ExperimentalPathApi
-import kotlin.io.path.div
-import kotlin.io.path.writeText
 
 @ExperimentalPathApi
 internal class BomGeneratorPluginFunctionalTest {
@@ -29,14 +27,14 @@ internal class BomGeneratorPluginFunctionalTest {
     @Test
     internal fun `must not be applied to root project`() {
         // given a sample settings.gradle
-        (projectDir / "settings.gradle").writeText(
+        projectDir.withSettingsGradle(
             """
             rootProject.name = 'sample'
             """.trimIndent()
         )
 
         // and the plugin applied to build.gradle in the root project
-        (projectDir / "build.gradle").writeText(
+        projectDir.withBuildGradle(
             """
             plugins {
                 id('io.github.gradlebom.generator-plugin')
@@ -45,7 +43,7 @@ internal class BomGeneratorPluginFunctionalTest {
             version = '0.0.1'
             
             // use this instead of --dry-run to get the tasks in the result verification
-            tasks.all { enabled = false }
+            // tasks.all { enabled = false }
             """.trimIndent()
         )
 
@@ -65,7 +63,7 @@ internal class BomGeneratorPluginFunctionalTest {
     @Test
     internal fun `should generate BOM file with default publication`() {
         // given setting.gradle file with multiple subprojects
-        (projectDir / "settings.gradle").writeText(
+        projectDir.withSettingsGradle(
             """
                 include(':example-bom')
                 include(':example-app')
@@ -121,7 +119,7 @@ internal class BomGeneratorPluginFunctionalTest {
     @Test
     internal fun `should generate BOM file with explicit publication configuration`() {
         // given settings.gradle with multiple subprojects
-        (projectDir / "settings.gradle").writeText(
+        projectDir.withSettingsGradle(
             """
                 include(':example-bom')
                 include(':example-app')
@@ -178,7 +176,7 @@ internal class BomGeneratorPluginFunctionalTest {
     @Test
     internal fun `should generate BOM file with included dependencies`() {
         // given settings.gradle file
-        (projectDir / "settings.gradle").writeText(
+        projectDir.withSettingsGradle(
             """
                 include(':example-bom')
             """.trimIndent()
