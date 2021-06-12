@@ -2,13 +2,10 @@ package io.github.gradlebom
 
 import io.github.gradlebom.dependency.generators.IncludedDependenciesGenerators
 import io.github.gradlebom.pom.PomGenerator
+import io.github.gradlebom.publication.PublicationConfiguratorFactory
 import io.github.gradlebom.utils.MavenPublishPluginApplier
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.create
 
 /**
  * BOM Generator Plugin.
@@ -34,20 +31,8 @@ class BomGeneratorPlugin : Plugin<Project> {
                 .distinct()
                 .let(::PomGenerator)
 
-            val projectName = name
-
-            extensions.configure<PublishingExtension> {
-                publications {
-                    create<MavenPublication>(PUBLICATION_NAME) {
-                        artifactId = projectName
-                        pom.withXml(pomGenerator::generateXml)
-                    }
-                }
-            }
+            val publicationConfigurator = PublicationConfiguratorFactory.of(project)
+            publicationConfigurator.configurePomWith(pomGenerator)
         }
-    }
-
-    private companion object {
-        const val PUBLICATION_NAME = "bomJava"
     }
 }

@@ -62,7 +62,7 @@ internal class BomGeneratorPluginFunctionalTest {
     }
 
     @Test
-    internal fun `should generate BOM file`() {
+    internal fun `should generate BOM file with default publication`() {
         // Setup the test build
         (projectDir / "settings.gradle").writeText(
             """
@@ -95,6 +95,72 @@ internal class BomGeneratorPluginFunctionalTest {
         val pomContent = `read a POM file from`(exampleBomProject)
 
         val pom = Jsoup.parse(pomContent)
+
+        with(pom.select("dependencyManagement")) {
+            assertTrue(isNotEmpty()) {
+                "'dependencyManagement' node exists"
+            }
+
+            with(select("dependency")) {
+                assertEquals(size, 1) {
+                    "has single 'dependency' node"
+                }
+
+                with(first()) {
+                    assertEquals(selectFirst("groupId").text(), "org.example") {
+                        "has correct 'groupId'"
+                    }
+                    assertEquals(selectFirst("artifactId").text(), "example-app") {
+                        "has correct 'artifactId'"
+                    }
+                    assertEquals(selectFirst("version").text(), "0.0.1") {
+                        "has correct 'version'"
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    internal fun `should generate BOM file with explicit publication configuration`() {
+        // Setup the test build
+        (projectDir / "settings.gradle").writeText(
+            """
+                include(':example-bom')
+                include(':example-app')
+            """.trimIndent()
+        )
+
+        val exampleBomProject = (projectDir / "example-bom").createDirectories()
+        (exampleBomProject / "build.gradle").writeText(
+            """
+                plugins {
+                    id('io.github.gradlebom.generator-plugin')
+                }
+                group = 'org.example'
+                version = '0.0.1'
+                
+                publishing {
+                    publications {
+                        maven(MavenPublication) {
+                            artifactId = 'my-example-bom'
+                        }
+                    }
+                }
+            """.trimIndent()
+        )
+
+        `create a subproject`("example-app")
+
+        gradleRunner.withArguments(":example-bom:generatePomFileForMavenPublication").build()
+
+        val pomContent = `read a POM file from`(exampleBomProject, "maven")
+
+        val pom = Jsoup.parse(pomContent)
+
+        with(pom.selectFirst("artifactId")) {
+            assertEquals(text(), "my-example-bom")
+        }
 
         with(pom.select("dependencyManagement")) {
             assertTrue(isNotEmpty()) {
@@ -222,7 +288,7 @@ internal class BomGeneratorPluginFunctionalTest {
         )
     }
 
-    private fun `read a POM file from`(path: Path): String =
-        (path / "build" / "publications" / "bomJava" / "pom-default.xml")
+    private fun `read a POM file from`(path: Path, publicationName: String = "bomJava"): String =
+        (path / "build" / "publications" / publicationName / "pom-default.xml")
             .readText()
 }

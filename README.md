@@ -12,6 +12,9 @@ multi-project dependency.
     * [Applying the plugin](#applying-the-plugin)
       * [Using Kotlin](#applying-the-plugin-in-kotlin)
       * [Using Groovy](#applying-the-plugin-in-groovy)
+    * [Configuring publication](#configuring-publication)
+      * [Default publication configuration](#default-publication-configuration)
+      * [Explicit publication configurations](#explicit-publication-configurations)
     * [Excluding unwanted modules](#excluding-unwanted-modules)
     * [Including external dependencies](#including-external-dependencies)
     * [Importing generated BOM in Gradle project](#importing-generated-bom-in-gradle-project)
@@ -51,6 +54,40 @@ version = '1.0.0'
 ```
 
 Next include the new module in `settings.gradle`. Finally, build whole multi-module project.
+
+## Configuring publication
+
+If you don't know, how to configure `MavenPublication`,
+check out the official documentation of [Maven Publish Plugin].
+
+### Default publication configuration
+
+By default, you don't need to configure `MavenPublication`
+on your own. The plugin configures a basic publication
+with name `bomJava`. It uses the project name as `artifactId`.
+
+### Explicit publication configurations
+
+You can configure publications on your own. The plugin collects
+all defined Maven publications and generates a BOM accordingly.
+The plugin applies Maven Publish Plugin, so you don't have to.
+An explicit publication configuration in Kotlin can look like this:
+
+```kotlin
+plugins {
+    id("io.github.gradlebom.generator-plugin") version "«version»"
+}
+group = "org.example"
+version = "0.0.1"
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = "my-example-bom"
+        }
+    }
+}
+```
 
 ## Excluding unwanted modules
 
@@ -147,3 +184,5 @@ Copyright © 2021 Waldemar Panas
 [bill of materials (BOM) file]: https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies
 
 [official guide]: https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:creating_multi_project_builds
+
+[Maven Publish Plugin]: https://docs.gradle.org/current/userguide/publishing_maven.html
