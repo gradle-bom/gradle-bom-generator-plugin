@@ -1,10 +1,15 @@
 # Gradle BOM generator plugin
 
 [![Tests](https://github.com/gradle-bom/gradle-bom-generator-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/gradle-bom/gradle-bom-generator-plugin/actions/workflows/ci.yml)
+[![Version: 1.0.0.Final](https://img.shields.io/badge/Version-1.0.0.Final-blue)](https://plugins.gradle.org/plugin/io.github.gradlebom.generator-plugin)
 
 This Gradle plugin generates a [bill of materials (BOM) file]
 for multi-module projects. Next BOM can be imported in other projects and efficiently ease working with versioning
-multi-project dependency.
+multi-project dependency. The plugin allows excluding modules & including external dependencies.
+You can configure multiple Maven publications or use default one.
+
+> Attention! Module to be included in a BOM has to have [Maven Publish Plugin] applied
+> and configured.
 
 ## Table of contents
 
@@ -35,7 +40,7 @@ multi-module project, check out this [official guide].
 
 ```kotlin
 plugins {
-    id("io.github.gradlebom.generator-plugin") version "«version»"
+    id("io.github.gradlebom.generator-plugin") version "1.0.0.Final"
 }
 
 group = "org.example"
@@ -46,7 +51,7 @@ version = "1.0.0"
 
 ```groovy
 plugins {
-    id 'io.github.gradlebom.generator-plugin' version '«version»'
+    id 'io.github.gradlebom.generator-plugin' version '1.0.0.Final'
 }
 
 group = 'org.example'
@@ -75,7 +80,7 @@ An explicit publication configuration in Kotlin can look like this:
 
 ```kotlin
 plugins {
-    id("io.github.gradlebom.generator-plugin") version "«version»"
+    id("io.github.gradlebom.generator-plugin") version "1.0.0.Final"
 }
 group = "org.example"
 version = "0.0.1"
