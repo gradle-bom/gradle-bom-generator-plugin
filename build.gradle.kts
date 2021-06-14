@@ -8,7 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.4.31"
     // Can't have 1.5.0 until it's fixed https://github.com/gradle/gradle/issues/15020
 
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
 
     id("org.jetbrains.dokka") version "1.4.32"
