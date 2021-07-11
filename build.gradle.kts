@@ -5,7 +5,7 @@ plugins {
     id("com.gradle.plugin-publish") version "0.15.0"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.4.31"
+    id("org.jetbrains.kotlin.jvm") version "1.5.20"
     // Can't have 1.5.0 until it's fixed https://github.com/gradle/gradle/issues/15020
 
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
