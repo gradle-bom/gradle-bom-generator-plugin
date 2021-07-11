@@ -2,20 +2,20 @@ plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `java-gradle-plugin`
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "0.14.0"
+    id("com.gradle.plugin-publish") version "0.15.0"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.4.31"
     // Can't have 1.5.0 until it's fixed https://github.com/gradle/gradle/issues/15020
 
-    id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
-    id("io.gitlab.arturbosch.detekt") version "1.16.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
+    id("io.gitlab.arturbosch.detekt") version "1.17.1"
 
     id("org.jetbrains.dokka") version "1.4.32"
 }
 
 group = "io.github.gradlebom"
-version = "1.0.0.Final"
+version = "1.0.1.RC1"
 
 val readableName = "BOM Generator Plugin"
 description = "Gradle plugin for generating a bill of materials (BOM) file for multi-module projects."
@@ -50,7 +50,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Use the JUnit 5 test library.
-    testImplementation(platform("org.junit:junit-bom:5.7.1"))
+    testImplementation(platform("org.junit:junit-bom:5.7.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     testImplementation("org.jsoup:jsoup:1.13.1")
