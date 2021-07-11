@@ -8,7 +8,7 @@ for multi-module projects. Next BOM can be imported in other projects and effici
 multi-project dependency. The plugin allows excluding modules & including external dependencies.
 You can configure multiple Maven publications or use default one.
 
-> Attention! Module to be included in a BOM has to have [Maven Publish Plugin] applied
+> Attention! A module to be included in a BOM has to have [Maven Publish Plugin] applied
 > and configured.
 
 ## Table of contents
