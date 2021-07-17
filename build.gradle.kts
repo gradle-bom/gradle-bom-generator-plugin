@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "io.github.gradlebom"
-version = "1.0.1.RC2"
+version = "1.0.1.RC3"
 
 val readableName = "BOM Generator Plugin"
 description = "Gradle plugin for generating a bill of materials (BOM) file for multi-module projects."
