@@ -5,10 +5,11 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertAll
 import java.nio.file.Path
-import java.util.Locale
+import java.util.*
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.createDirectories
 import kotlin.io.path.div
@@ -19,26 +20,20 @@ internal fun Elements.selectFirst(cssQuery: String) = select(cssQuery)[0]
 internal fun Elements.selectSecond(cssQuery: String) = select(cssQuery)[1]
 
 internal fun Document.verifyArtifactId(artifactId: String) {
-    with(selectFirst("artifactId")) {
-        Assertions.assertEquals(artifactId, text()) {
-            "has proper artifactId"
-        }
+    assertEquals(artifactId, selectFirst("artifactId")?.text()) {
+        "has proper artifactId"
     }
 }
 
 internal fun Document.verifyGroupId(groupId: String) {
-    with(selectFirst("groupId")) {
-        Assertions.assertEquals(groupId, text()) {
-            "has proper groupId"
-        }
+    assertEquals(groupId, selectFirst("groupId")?.text()) {
+        "has proper groupId"
     }
 }
 
 internal fun Document.verifyVersion(version: String) {
-    with(selectFirst("version")) {
-        Assertions.assertEquals(version, text()) {
-            "has proper version"
-        }
+    assertEquals(version, selectFirst("version")?.text()) {
+        "has proper version"
     }
 }
 
@@ -47,12 +42,12 @@ internal fun Document.verifyDependencyManagementNode(nodes: Int, verifyNodes: (E
         assertAll(
             "'dependencyManagement' node",
             {
-                Assertions.assertTrue(elements.isNotEmpty()) {
+                assertTrue(elements.isNotEmpty()) {
                     "exists"
                 }
             },
             {
-                Assertions.assertEquals(nodes, elements.select("dependency").size) {
+                assertEquals(nodes, elements.select("dependency").size) {
                     "has $nodes 'dependency' nodes"
                 }
             },
@@ -65,17 +60,17 @@ internal fun Element.verifyDependency(heading: String, groupId: String, artifact
     assertAll(
         heading,
         {
-            Assertions.assertEquals(groupId, selectFirst("groupId").text()) {
+            assertEquals(groupId, selectFirst("groupId")?.text()) {
                 "has correct 'groupId'"
             }
         },
         {
-            Assertions.assertEquals(artifactId, selectFirst("artifactId").text()) {
+            assertEquals(artifactId, selectFirst("artifactId")?.text()) {
                 "has correct 'artifactId'"
             }
         },
         {
-            Assertions.assertEquals(version, selectFirst("version").text()) {
+            assertEquals(version, selectFirst("version")?.text()) {
                 "has correct 'version'"
             }
         }

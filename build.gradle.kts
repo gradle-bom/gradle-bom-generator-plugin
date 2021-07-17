@@ -15,7 +15,7 @@ plugins {
 }
 
 group = "io.github.gradlebom"
-version = "1.0.1.RC1"
+version = "1.0.1.RC2"
 
 val readableName = "BOM Generator Plugin"
 description = "Gradle plugin for generating a bill of materials (BOM) file for multi-module projects."
@@ -53,7 +53,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.7.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
-    testImplementation("org.jsoup:jsoup:1.13.1")
+    testImplementation("org.jsoup:jsoup:1.14.1")
 }
 
 gradlePlugin {
