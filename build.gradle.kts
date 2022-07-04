@@ -53,7 +53,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.7.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
-    testImplementation("org.jsoup:jsoup:1.14.1")
+    testImplementation("org.jsoup:jsoup:1.15.2")
 }
 
 gradlePlugin {
