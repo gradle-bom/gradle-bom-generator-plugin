@@ -9,7 +9,7 @@ plugins {
     // Can't have 1.5.0 until it's fixed https://github.com/gradle/gradle/issues/15020
 
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
-    id("io.gitlab.arturbosch.detekt") version "1.17.1"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 
     id("org.jetbrains.dokka") version "1.4.32"
 }
